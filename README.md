@@ -4,13 +4,11 @@ TheCocoon is the working name of a browser-first 3D game project. The game title
 
 ## Quick test launch
 
-After the one-time dependency setup (`npm ci`), run:
+While the local **Play web prototype** task is running in VS Code, click:
 
-```bash
-npm run play:web
-```
+[Open TheCocoon in your browser](http://127.0.0.1:5173/)
 
-This starts the local game server and opens the game in your default browser at `http://127.0.0.1:5173/` (in a new tab or window, depending on your browser). Keep the terminal running while you play; press **Ctrl+C** there to stop the server.
+The link opens the game when the server is available. If it is not running, start **Play web prototype** from VS Code's **Terminal → Run Task…** menu. The browser cannot start a local server by itself, so leave the task running while you play.
 
 ## Current direction
 
