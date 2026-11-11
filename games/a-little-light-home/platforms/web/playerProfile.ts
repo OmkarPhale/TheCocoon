@@ -1,3 +1,9 @@
+import {
+  achievementQuestions,
+  type AchievementAnswerId,
+  type AchievementId,
+} from "../../src/game/progress/achievementQuestions";
+
 /**
  * Optional, child-friendly preferences for personalizing Mori's dialogue.
  *
@@ -35,6 +41,9 @@ export interface PlayerProfile {
   favoriteColor: FavoriteColor | "";
   favoriteCompanion: FavoriteCompanion | "";
   favoriteActivity: FavoriteActivity | "";
+  milestoneAnswers: Partial<
+    Record<AchievementId, AchievementAnswerId | "skipped">
+  >;
 }
 
 export interface PlayerProfileDraft {
@@ -42,6 +51,7 @@ export interface PlayerProfileDraft {
   favoriteColor: string;
   favoriteCompanion: string;
   favoriteActivity: string;
+  milestoneAnswers?: PlayerProfile["milestoneAnswers"];
 }
 
 export type ProfileLoadResult =
@@ -50,14 +60,35 @@ export type ProfileLoadResult =
 
 const storageKey = "thecocoon.player-keepsake";
 const storageFormat = "thecocoon.player-keepsake";
-const storageVersion = 1;
+const storageVersion = 2;
 
 export const emptyPlayerProfile: PlayerProfile = {
   nickname: "",
   favoriteColor: "",
   favoriteCompanion: "",
   favoriteActivity: "",
+  milestoneAnswers: {},
 };
+
+function isMilestoneAnswers(
+  value: unknown,
+): value is PlayerProfile["milestoneAnswers"] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+
+  const entries = Object.entries(value);
+  return entries.every(([achievementId, answerId]) => {
+    const question = achievementQuestions.find(
+      (item) => item.id === achievementId,
+    );
+    return (
+      question !== undefined &&
+      (answerId === "skipped" ||
+        question.answers.some((answer) => answer.id === answerId))
+    );
+  });
+}
 
 function isOneOf<T extends string>(
   value: unknown,
@@ -70,6 +101,38 @@ function isOneOf<T extends string>(
 }
 
 function isPlayerProfile(value: unknown): value is PlayerProfile {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const profile = value as Record<string, unknown>;
+  return (
+    Object.keys(profile).length === 5 &&
+    "nickname" in profile &&
+    "favoriteColor" in profile &&
+    "favoriteCompanion" in profile &&
+    "favoriteActivity" in profile &&
+    "milestoneAnswers" in profile &&
+    typeof profile.nickname === "string" &&
+    Array.from(profile.nickname).length <= 16 &&
+    !/[\u0000-\u001f\u007f]/u.test(profile.nickname) &&
+    (profile.favoriteColor === "" ||
+      isOneOf<FavoriteColor>(profile.favoriteColor, favoriteColors)) &&
+    (profile.favoriteCompanion === "" ||
+      isOneOf<FavoriteCompanion>(
+        profile.favoriteCompanion,
+        favoriteCompanions,
+      )) &&
+    (profile.favoriteActivity === "" ||
+      isOneOf<FavoriteActivity>(profile.favoriteActivity, favoriteActivities)) &&
+    isMilestoneAnswers(profile.milestoneAnswers)
+  );
+}
+
+function isLegacyPlayerProfile(value: unknown): value is Omit<
+  PlayerProfile,
+  "milestoneAnswers"
+> {
   if (!value || typeof value !== "object") {
     return false;
   }
@@ -104,6 +167,7 @@ export function normalizePlayerProfile(
     favoriteColor: profile.favoriteColor,
     favoriteCompanion: profile.favoriteCompanion,
     favoriteActivity: profile.favoriteActivity,
+    milestoneAnswers: profile.milestoneAnswers ?? {},
   };
   if (!isPlayerProfile(normalized)) {
     return null;
@@ -143,10 +207,23 @@ export function loadPlayerProfile(): ProfileLoadResult {
     !("format" in saved) ||
     !("version" in saved) ||
     !("profile" in saved) ||
-    saved.format !== storageFormat ||
-    saved.version !== storageVersion ||
-    !isPlayerProfile(saved.profile)
+    saved.format !== storageFormat
   ) {
+    return {
+      ok: false,
+      message:
+        "Saved keepsake details are from an unrecognized format. Clear them on this device before saving new choices.",
+    };
+  }
+
+  if (saved.version === 1 && isLegacyPlayerProfile(saved.profile)) {
+    return {
+      ok: true,
+      profile: { ...saved.profile, milestoneAnswers: {} },
+    };
+  }
+
+  if (saved.version !== storageVersion || !isPlayerProfile(saved.profile)) {
     return {
       ok: false,
       message:

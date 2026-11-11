@@ -1,12 +1,17 @@
 /**
- * Desktop keyboard movement for the first exploration slice.
+ * Keyboard-to-character adapter for the browser game.
  *
- * This module owns movement-key state and a small character-motion model.
- * Babylon's camera remains responsible for pointer look and collision-aware
- * position updates. The physical units are deliberately game-tuned rather
- * than presented as a measured real-world simulation.
+ * Havok resolves the capsule against the static world and applies character
+ * contact forces to the few small objects designed to be pushed. This module
+ * supplies the desired walking velocity; it does not pretend the game is a
+ * full physical simulation of every object in the meadow.
  */
-import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
+import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
+import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
+import {
+  CharacterSupportedState,
+  PhysicsCharacterController,
+} from "@babylonjs/core/Physics/v2/characterController";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 
 const movementKeys = new Set([
@@ -18,35 +23,37 @@ const movementKeys = new Set([
   "arrowleft",
   "arrowdown",
   "arrowright",
+  "shift",
 ]);
 
-const movementSpeed = 5.5;
-const acceleration = 18;
-const braking = 24;
-const gravity = 22;
-const maximumFallSpeed = 20;
+const walkSpeed = 4.7;
+const runSpeed = 7;
+const gravity = new Vector3(0, -9.81, 0);
+const jumpSpeed = 5.3;
 
 export function createKeyboardMovement(
-  camera: FreeCamera,
+  controller: PhysicsCharacterController,
+  camera: ArcRotateCamera,
+  player: TransformNode,
   isEnabled: () => boolean,
 ): (deltaMs: number) => void {
   const pressedKeys = new Set<string>();
-  const horizontalVelocity = Vector3.Zero();
-  let verticalVelocity = 0;
+  const up = Vector3.Up();
+  const down = new Vector3(0, -1, 0);
+  let jumpQueued = false;
+  let cameraForward = new Vector3(0, 0, 1);
+  let cameraRight = new Vector3(1, 0, 0);
+  const desiredDirection = Vector3.Zero();
 
-  // A downward collision is the landing signal for this camera-sized body.
-  camera.onCollide = () => {
-    if (verticalVelocity < 0) {
-      verticalVelocity = 0;
-    }
-  };
-
-  // Listen on window so keys still work after clicking the canvas. Ignore
-  // movement while a modal or another blocking game state is active.
   window.addEventListener("keydown", (event) => {
     const key = event.key.toLowerCase();
     if (movementKeys.has(key) && isEnabled()) {
       pressedKeys.add(key);
+      event.preventDefault();
+    }
+
+    if (event.code === "Space" && isEnabled()) {
+      jumpQueued = true;
       event.preventDefault();
     }
   });
@@ -55,73 +62,74 @@ export function createKeyboardMovement(
     pressedKeys.delete(event.key.toLowerCase());
   });
 
-  // Clear movement if the browser loses focus so a key cannot remain held.
   window.addEventListener("blur", () => {
     pressedKeys.clear();
-    horizontalVelocity.set(0, 0, 0);
-    verticalVelocity = 0;
-    camera.cameraDirection.set(0, 0, 0);
+    jumpQueued = false;
   });
 
   return (deltaMs) => {
     if (!isEnabled()) {
       pressedKeys.clear();
-      horizontalVelocity.set(0, 0, 0);
-      verticalVelocity = 0;
-      camera.cameraDirection.set(0, 0, 0);
-      return;
+      jumpQueued = false;
     }
 
-    // Flatten the view direction so looking up or down never changes the
-    // player's height while walking.
-    const forward = camera.getDirection(Vector3.Forward());
-    forward.y = 0;
-    forward.normalize();
+    // ArcRotateCamera.alpha gives a stable horizontal heading even while the
+    // player looks up or down. The camera orbit therefore never tilts movement.
+    cameraForward.set(-Math.cos(camera.alpha), 0, -Math.sin(camera.alpha));
+    cameraForward.normalize();
+    Vector3.CrossToRef(up, cameraForward, cameraRight);
+    cameraRight.normalize();
 
-    const right = Vector3.Cross(Vector3.Up(), forward).normalize();
-    const movement = Vector3.Zero();
-
+    desiredDirection.set(0, 0, 0);
     if (pressedKeys.has("w") || pressedKeys.has("arrowup")) {
-      movement.addInPlace(forward);
+      desiredDirection.addInPlace(cameraForward);
     }
     if (pressedKeys.has("s") || pressedKeys.has("arrowdown")) {
-      movement.subtractInPlace(forward);
+      desiredDirection.subtractInPlace(cameraForward);
     }
     if (pressedKeys.has("d") || pressedKeys.has("arrowright")) {
-      movement.addInPlace(right);
+      desiredDirection.addInPlace(cameraRight);
     }
     if (pressedKeys.has("a") || pressedKeys.has("arrowleft")) {
-      movement.subtractInPlace(right);
+      desiredDirection.subtractInPlace(cameraRight);
     }
 
-    // Cap elapsed time so a paused tab cannot accumulate a large movement or
-    // fall step. Normalizing the input keeps diagonal walking at the same pace.
-    const elapsedSeconds = Math.min(deltaMs / 1000, 0.05);
-    const targetVelocity =
-      movement.lengthSquared() > 0
-        ? movement.normalize().scale(movementSpeed)
-        : Vector3.Zero();
-    const velocityChange = targetVelocity.subtract(horizontalVelocity);
-    const maximumChange =
-      (targetVelocity.lengthSquared() > 0 ? acceleration : braking) *
-      elapsedSeconds;
+    const deltaSeconds = Math.min(deltaMs / 1000, 1 / 30);
+    const support = controller.checkSupport(deltaSeconds, down);
+    const currentVelocity = controller.getVelocity();
 
-    if (velocityChange.length() <= maximumChange) {
-      horizontalVelocity.copyFrom(targetVelocity);
-    } else {
-      horizontalVelocity.addInPlace(
-        velocityChange.normalize().scale(maximumChange),
-      );
+    if (
+      jumpQueued &&
+      support.supportedState === CharacterSupportedState.SUPPORTED
+    ) {
+      currentVelocity.y = jumpSpeed;
+    }
+    jumpQueued = false;
+
+    const hasInput = desiredDirection.lengthSquared() > 0;
+    if (hasInput) {
+      desiredDirection.normalize();
+      player.rotation.y = Math.atan2(desiredDirection.x, desiredDirection.z);
     }
 
-    verticalVelocity = Math.max(
-      verticalVelocity - gravity * elapsedSeconds,
-      -maximumFallSpeed,
+    const speed = pressedKeys.has("shift") ? runSpeed : walkSpeed;
+    const desiredVelocity = new Vector3(
+      hasInput ? desiredDirection.x * speed : 0,
+      currentVelocity.y,
+      hasInput ? desiredDirection.z * speed : 0,
     );
-    camera.cameraDirection.set(
-      horizontalVelocity.x * elapsedSeconds,
-      verticalVelocity * elapsedSeconds,
-      horizontalVelocity.z * elapsedSeconds,
+    const movementVelocity = controller.calculateMovement(
+      deltaSeconds,
+      cameraForward,
+      support.averageSurfaceNormal,
+      currentVelocity,
+      support.averageSurfaceVelocity,
+      desiredVelocity,
+      up,
     );
+
+    controller.setVelocity(movementVelocity);
+    controller.integrate(deltaSeconds, support, gravity);
+    player.position.copyFrom(controller.getPosition());
   };
 }

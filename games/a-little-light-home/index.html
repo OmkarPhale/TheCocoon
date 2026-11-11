@@ -37,10 +37,12 @@
               You're a new Wayfinder. Help Mori find three star-notes and ring
               the bell again.
             </p>
-            <button id="start-game" class="start-button" type="button">
-              Begin the story <span aria-hidden="true">→</span>
+            <button id="start-game" class="start-button" type="button" disabled>
+              Preparing the meadow…
             </button>
-            <p class="welcome-note">A gentle adventure about helping lost friends find their way home.</p>
+            <p id="startup-message" class="welcome-note" role="status">
+              A gentle adventure about helping lost friends find their way home.
+            </p>
           </div>
           <div class="welcome-art" aria-hidden="true">
             <svg
@@ -82,6 +84,7 @@
           <div class="welcome-controls" aria-label="How to play">
             <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to wander</span>
             <span><span class="welcome-mouse" aria-hidden="true"></span> to look around</span>
+            <span><kbd>Space</kbd> to hop</span>
             <span><kbd>E</kbd> to say hello</span>
           </div>
         </div>
@@ -168,9 +171,9 @@
             </select>
           </label>
           <p id="keepsake-privacy" class="keepsake-privacy">
-            If you save, your choices stay in this browser and are not sent to
-            a game server. Please use a nickname, not your full name. A grown-up
-            can help clear them later.
+            Your choices and story answers stay in this browser and are not sent
+            to a game server. Please use a nickname, not your full name. A
+            grown-up can help clear them later.
           </p>
           <p id="keepsake-message" class="keepsake-message" role="status"></p>
           <div class="keepsake-actions">
@@ -181,7 +184,41 @@
               Maybe later
             </button>
             <button id="clear-keepsake" class="quiet-button" type="button">
-              Forget saved choices
+              Forget saved answers and choices
+            </button>
+          </div>
+        </form>
+      </section>
+      <section
+        id="achievement-dialog"
+        class="achievement-overlay"
+        role="dialog"
+        aria-labelledby="achievement-title"
+        aria-describedby="achievement-question"
+        hidden
+      >
+        <form id="achievement-form" class="keepsake-card achievement-card">
+          <p id="achievement-eyebrow" class="eyebrow keepsake-eyebrow">
+            A new meadow memory
+          </p>
+          <h2 id="achievement-title">Mori has found a friend</h2>
+          <fieldset class="achievement-fieldset">
+            <legend id="achievement-question" class="keepsake-intro">
+              What would you and Mori like to do first?
+            </legend>
+            <div id="achievement-options" class="achievement-options"></div>
+          </fieldset>
+          <p class="keepsake-privacy">
+            There is no wrong answer. You can skip this, too. Your choice stays
+            in this browser and is not sent to a game server.
+          </p>
+          <p id="achievement-message" class="keepsake-message" role="status"></p>
+          <div class="keepsake-actions">
+            <button id="save-achievement" class="start-button" type="submit">
+              Share my thought
+            </button>
+            <button id="skip-achievement" class="quiet-button" type="button">
+              Keep exploring
             </button>
           </div>
         </form>
@@ -190,6 +227,7 @@
         <div class="controls">
           <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</span>
           <span><span class="mouse-icon" aria-hidden="true"></span> Look</span>
+          <span><kbd>Space</kbd> Jump</span>
           <span><kbd>E</kbd> Say hello</span>
         </div>
         <span class="build-label">Prototype · 0.1</span>

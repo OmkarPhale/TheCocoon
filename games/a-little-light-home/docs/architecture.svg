@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title description">
   <title id="title">A Little Light Home browser prototype architecture</title>
-  <desc id="description">A technical overview of the currently implemented browser-only solo prototype. Keyboard input drives accelerated, grounded movement with camera collisions; the application updates a Babylon.js scene, story dialogue, and an optional browser-local player keepsake. A dashed, separate box marks the real-time multiplayer service as future work.</desc>
+  <desc id="description">A technical overview of the currently implemented browser-only solo prototype. Keyboard input drives a Havok capsule character controller in a Babylon.js scene with static scenery and pushable props; the application updates story dialogue and an optional browser-local keepsake with milestone answers. A dashed, separate box marks the real-time multiplayer service as future work.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#081815"/>
@@ -50,22 +50,22 @@
   <rect x="117" y="328" width="220" height="177" rx="12" class="module"/>
   <text x="140" y="362" class="mono accent" font-size="11">01 · Player</text>
   <text x="140" y="397" font-size="21" font-weight="600">Keyboard + mouse</text>
-  <text x="140" y="429" class="muted" font-size="14">WASD / arrows move</text>
-  <text x="140" y="452" class="muted" font-size="14">Pointer controls camera</text>
+  <text x="140" y="429" class="muted" font-size="14">WASD / arrows move · Shift runs</text>
+  <text x="140" y="452" class="muted" font-size="14">Space jumps · pointer looks</text>
   <text x="140" y="483" class="dim" font-size="12">Desktop input only</text>
 
   <rect x="391" y="328" width="290" height="177" rx="12" class="module"/>
   <text x="414" y="362" class="mono accent" font-size="11">02 · Input adapter</text>
-  <text x="414" y="397" font-size="21" font-weight="600">Keyboard movement</text>
-  <text x="414" y="429" class="muted" font-size="14">Accelerates, brakes; normalizes diagonals</text>
-  <text x="414" y="452" class="muted" font-size="14">Integrates gravity; sends movement to collisions</text>
+  <text x="414" y="397" font-size="21" font-weight="600">Character controller</text>
+  <text x="414" y="429" class="muted" font-size="14">Camera-relative walk / run; supported jump</text>
+  <text x="414" y="452" class="muted" font-size="14">Havok resolves support, gravity, and contact</text>
   <text x="414" y="483" class="mono dim" font-size="12">platforms/web/input/keyboardMovement.ts</text>
 
   <rect x="735" y="328" width="333" height="177" rx="12" class="module"/>
   <text x="758" y="362" class="mono accent" font-size="11">03 · Application composition</text>
   <text x="758" y="397" font-size="21" font-weight="600">Entry point + frame loop</text>
-  <text x="758" y="429" class="muted" font-size="14">Coordinates input, story, and rendering</text>
-  <text x="758" y="452" class="muted" font-size="14">Loads optional keepsake from this browser</text>
+  <text x="758" y="429" class="muted" font-size="14">Coordinates input, story, questions, and rendering</text>
+  <text x="758" y="452" class="muted" font-size="14">Loads keepsake and milestone answers locally</text>
   <text x="758" y="483" class="mono dim" font-size="12">platforms/web/main.ts</text>
 
   <path d="M337 416H386" class="flow"/>
@@ -73,13 +73,13 @@
 
   <rect x="391" y="563" width="677" height="244" rx="12" class="module"/>
   <text x="416" y="598" class="mono accent" font-size="11">04 · Scene factory  /  Babylon.js</text>
-  <text x="416" y="634" font-size="22" font-weight="600">Scene, collision camera, meadow, beacon</text>
+  <text x="416" y="634" font-size="22" font-weight="600">Havok world, character, meadow, beacon</text>
   <line x1="416" y1="652" x2="1042" y2="652" class="divider"/>
-  <text x="416" y="684" class="muted" font-size="14">• Camera ellipsoid collides with ground, trees, rocks, and the hill ramp.</text>
-  <text x="416" y="710" class="muted" font-size="14">• Pointer look, collision response, and scene rendering use Babylon.js.</text>
+  <text x="416" y="684" class="muted" font-size="14">• A capsule controller collides with the ground, rocks, trees, and ramp.</text>
+  <text x="416" y="710" class="muted" font-size="14">• Three dynamic seed stones can be pushed; other scenery is mostly static.</text>
   <text x="416" y="736" class="muted" font-size="14">• Discovery rules and player-keepsake data stay out of the renderer.</text>
-  <text x="416" y="762" class="muted" font-size="14">• Profile choices persist locally; story discovery resets on reload.</text>
-  <text x="416" y="790" class="mono dim" font-size="12">src/rendering/babylon/createWorld.ts · tuned prototype physics</text>
+  <text x="416" y="762" class="muted" font-size="14">• Profile answers persist locally; chapter discovery resets on reload.</text>
+  <text x="416" y="790" class="mono dim" font-size="12">src/rendering/babylon/createWorld.ts · Havok prototype physics</text>
 
   <path d="M536 505V548" class="flow"/>
   <path d="M901 505V548" class="flow"/>

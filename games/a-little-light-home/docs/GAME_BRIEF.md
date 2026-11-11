@@ -14,7 +14,7 @@ Develop a polished game that can reach players across platforms over time. Begin
 | Initial game direction | 3D exploration and discovery, framed by an original gentle story |
 | Working story | A Little Light Home: The Last Note — a new Wayfinder helps Mori, a lost cocoon spirit, find the scattered star-notes of the silent Hearthbell |
 | Play modes | Solo and real-time co-op |
-| First gameplay scope | One compact area, basic movement and camera, and one discovery to find |
+| First gameplay scope | One compact area, a visible third-person Wayfinder, a grounded physics controller, pushable props, and one discovery |
 | Feature sequence | Exploration first; then puzzles, collection/extraction, and survival gradually |
 | Provisional rendering stack | TypeScript + Babylon.js |
 | Rendering compatibility direction | WebGL 2 baseline; WebGPU may be an optional enhancement |
@@ -22,11 +22,11 @@ Develop a polished game that can reach players across platforms over time. Begin
 | Code organization | Platform-independent game rules; separate rendering and platform-host adapters |
 | Offline workflow | Local browser development/build after Node.js, dependencies, and assets are available |
 | Player keepsake | Optional nickname and playful preferences, saved only in this browser; no account or game-server upload |
-| Current movement model | Accelerated walking, gravity, a camera-sized collision body, a flat meadow, and a simple hill ramp; tuned game physics rather than a full simulation |
+| Current movement model | Havok capsule controller with camera-relative walking/running, supported jumping, gravity, static scenery colliders, and three dynamic pushable seeds; game-tuned prototype physics, not a full scene simulation |
 
 ## Prototype status
 
-The first story slice now opens with a chapter-specific welcome, introduces Starwake Meadow, the Wayfinder, Mori, and the silent Hearthbell, then leads to a first encounter. Greeting Mori wakes three visible star-lights along a stepping-stone route toward the hilltop bell. At that first natural pause, Mori can optionally ask for a nickname, favorite color, meadow friend, and activity; saved choices stay in the browser, can be changed or forgotten from the player keepsake button, and are used in Mori's story response and the path-light color. The player can skip every question. Reaching the bell, finding the notes, and ringing it remain future work. The character and setting are still subject to feedback. Play remains solo-only; real-time co-op is still planned.
+The first story slice opens with a chapter-specific welcome, introduces Starwake Meadow, the Wayfinder, Mori, and the silent Hearthbell, then leads to a first encounter. Greeting Mori wakes three visible star-lights along a stepping-stone route toward the hilltop bell. Mori offers one non-blocking, optional fixed-choice question for this achievement; it can be answered or skipped and will not be asked again on that browser profile. Separately, the player can optionally save a nickname, favorite color, meadow friend, and activity. Choices remain in this browser, can be changed or forgotten from the player keepsake button, and personalize Mori's response and the path-light color. Reaching the bell, finding the notes, and ringing it remain future work. The environment and character are still procedural placeholder art, and need art-direction and player feedback. Play remains solo-only; real-time co-op is still planned.
 
 ## Design principles
 
@@ -34,8 +34,8 @@ The first story slice now opens with a chapter-specific welcome, introduces Star
 - Make the discovery loop work for a solo player and remain enjoyable in co-op.
 - Add features in measured steps; use player feedback to guide expansion.
 - Keep personal questions optional and playful; do not request contact details, account data, or sensitive information from young players.
-- Give meaningful story milestones a personal, preference-aware response without interrupting every small pickup.
-- Make movement feel grounded and consistent while keeping magic and stylized presentation clearly part of the fiction.
+- Ask one optional, story-themed question at each major achievement; never make a response required for continued play.
+- Make movement feel grounded and consistent with a real physics middleware while keeping the stylized fiction clearly separate from calibrated real-world simulation.
 - Keep platform-specific capabilities behind the engine and browser APIs where practical.
 - Treat desktop browsers as the initial development target; evaluate mobile browser support as a separate compatibility and usability check.
 
@@ -45,6 +45,7 @@ These are intentionally unresolved; do not treat the provisional direction as a 
 
 - Whether playtesting confirms the A Little Light Home title, character designs, and visual direction.
 - Whether playtesting confirms the story premise, reading level, and first-chapter objective.
+- Whether the first question's timing, answer choices, and non-blocking presentation feel comfortable to children.
 - Intended player count and how players join a co-op session.
 - Browser/device support matrix and performance targets.
 - Whether Babylon.js remains the best fit after a minimal rendering prototype.

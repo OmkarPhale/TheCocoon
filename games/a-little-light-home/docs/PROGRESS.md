@@ -20,7 +20,10 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [x] Added an illustrated, child-friendly welcome screen and a clear start-to-play flow.
 - [x] Gave the first exploration slice a named story premise, character, destination, and visible next-step hook.
 - [x] Added an optional, editable browser-only player keepsake and used its preferences in Mori's first milestone response.
-- [x] Added accelerated grounded movement, gravity, solid scenery collisions, and a gentle collision-aware approach ramp.
+- [x] Added a Havok-backed capsule character controller with camera-relative walking/running, supported jumping, gravity, scenery collisions, a gentle ramp, and three dynamic pushable seed stones.
+- [x] Added a visible third-person Wayfinder, a more detailed procedural meadow, softer lighting, and shadows.
+- [x] Added an optional, non-blocking question for the first major achievement; answers and skips are validated and saved in the versioned browser keepsake.
+- [x] Confirmed version-1 keepsakes migrate to the current profile format without losing nickname or favorite choices.
 - [x] Renamed the current game A Little Light Home and separated its story, browser client, rules, rendering, and tests from the shared TheCocoon workspace.
 - [x] Added root-level ownership rules for future shared engine code, platform integrations, shared assets, and tests.
 
@@ -29,9 +32,10 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [ ] Playtest the Wayfinder, Mori, and Hearthbell story beat with children and their parents/guardians; revise based on what they understand and enjoy.
 - [ ] Define the first playable scope, including session flow and a small co-op player count.
 - [ ] Confirm WebGL 2 support and the intended fallback behavior across target browsers.
-- [ ] Playtest the discovery loop and refine movement, camera feel, collision tuning, and interaction feedback.
+- [ ] Playtest the discovery loop and refine movement, camera feel, collision tuning, pushable-prop behavior, and interaction feedback.
 - [ ] Get feedback on the welcome screen, tone, and companion from children and their parents/guardians before finalizing the art direction.
-- [ ] Revisit code splitting and load performance before broader release; the Babylon.js bundle is about 1.08 MB uncompressed (264 KB gzip).
+- [ ] Revisit code splitting and load performance before broader release; the Havok WebAssembly module increases the initial download.
+- [ ] Add a question to each new major achievement as those story stages are implemented.
 - [ ] Add a minimal real-time co-op session and test solo and co-op paths.
 - [ ] Gather feedback from players and prioritize the next gameplay increment.
 - [ ] Revisit repository visibility and licensing during release preparation.
@@ -44,6 +48,7 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [ ] Choose multiplayer session and hosting architecture.
 - [ ] Define future account/co-op save needs and privacy or moderation requirements; current personal keepsake is optional, local-only, and not shared.
 - [ ] Revisit mobile, native desktop, console, and cloud-streaming targets after browser validation.
+- [ ] Measure Havok startup and frame performance on target desktop and mobile hardware; current validation covers only a local desktop browser.
 - [ ] Select Windows/macOS/Linux desktop and Android/iOS integration strategies before adding native project files.
 - [ ] Verify offline installation from a clean checkout on every machine intended for disconnected development.
 

@@ -11,6 +11,9 @@ export default defineConfig({
     outDir: resolve(workspaceRoot, "dist"),
     emptyOutDir: true,
   },
+  optimizeDeps: {
+    exclude: ["@babylonjs/havok"],
+  },
   server: {
     host: "127.0.0.1",
   },
