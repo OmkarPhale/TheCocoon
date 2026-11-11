@@ -21,16 +21,21 @@ Develop a polished game that can reach players across platforms over time. Begin
 | Cloud game streaming | Not in the current scope |
 | Code organization | Platform-independent game rules; separate rendering and platform-host adapters |
 | Offline workflow | Local browser development/build after Node.js, dependencies, and assets are available |
+| Player keepsake | Optional nickname and playful preferences, saved only in this browser; no account or game-server upload |
+| Current movement model | Accelerated walking, gravity, a camera-sized collision body, a flat meadow, and a simple hill ramp; tuned game physics rather than a full simulation |
 
 ## Prototype status
 
-The first story slice now opens with a chapter-specific welcome, introduces Starwake Meadow, the Wayfinder, Mori, and the silent Hearthbell, then leads to a first encounter. Greeting Mori wakes three visible star-lights along a stepping-stone route toward the hilltop bell. Reaching the bell, finding the notes, and ringing it remain future work. The character and setting are still subject to feedback. Play remains solo-only; real-time co-op is still planned.
+The first story slice now opens with a chapter-specific welcome, introduces Starwake Meadow, the Wayfinder, Mori, and the silent Hearthbell, then leads to a first encounter. Greeting Mori wakes three visible star-lights along a stepping-stone route toward the hilltop bell. At that first natural pause, Mori can optionally ask for a nickname, favorite color, meadow friend, and activity; saved choices stay in the browser, can be changed or forgotten from the player keepsake button, and are used in Mori's story response and the path-light color. The player can skip every question. Reaching the bell, finding the notes, and ringing it remain future work. The character and setting are still subject to feedback. Play remains solo-only; real-time co-op is still planned.
 
 ## Design principles
 
 - Keep the first playable build small enough to test early.
 - Make the discovery loop work for a solo player and remain enjoyable in co-op.
 - Add features in measured steps; use player feedback to guide expansion.
+- Keep personal questions optional and playful; do not request contact details, account data, or sensitive information from young players.
+- Give meaningful story milestones a personal, preference-aware response without interrupting every small pickup.
+- Make movement feel grounded and consistent while keeping magic and stylized presentation clearly part of the fiction.
 - Keep platform-specific capabilities behind the engine and browser APIs where practical.
 - Treat desktop browsers as the initial development target; evaluate mobile browser support as a separate compatibility and usability check.
 
@@ -45,7 +50,7 @@ These are intentionally unresolved; do not treat the provisional direction as a 
 - Whether Babylon.js remains the best fit after a minimal rendering prototype.
 - Whether desktop/mobile apps should use a WebView shell or a separate native rendering/runtime approach.
 - Multiplayer architecture, hosting provider, and server authority model.
-- Save data, accounts, progression, privacy, and moderation requirements.
+- Future save/account needs, co-op profile sharing, privacy, and moderation requirements. The current prototype intentionally uses browser-only keepsake storage with no account or server sync.
 - Whether and when to pursue native mobile, desktop, console, or cloud-streaming releases.
 
 ## Technical notes

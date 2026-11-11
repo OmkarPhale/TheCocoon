@@ -275,10 +275,43 @@ body {
 
 .brand,
 .mode-label,
+.top-actions,
 .controls,
 .controls > span {
   display: flex;
   align-items: center;
+}
+
+.top-actions {
+  gap: 18px;
+}
+
+.keepsake-button,
+.quiet-button {
+  border: 1px solid rgb(249 255 248 / 55%);
+  border-radius: 12px;
+  background: rgb(31 77 69 / 35%);
+  color: #fffdf6;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.keepsake-button {
+  min-height: 36px;
+  padding: 0 12px;
+}
+
+.keepsake-button:hover,
+.keepsake-button:focus-visible {
+  background: rgb(31 77 69 / 70%);
+}
+
+.keepsake-button:focus-visible,
+.quiet-button:focus-visible {
+  outline: 3px solid #e4a941;
+  outline-offset: 3px;
 }
 
 .brand {
@@ -373,6 +406,125 @@ body {
 }
 
 .proximity-hint[hidden] {
+  display: none;
+}
+
+.keepsake-overlay {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  padding: 20px;
+  background: rgb(24 63 65 / 62%);
+}
+
+.keepsake-overlay[hidden] {
+  display: none;
+}
+
+.keepsake-card {
+  display: grid;
+  width: min(520px, 100%);
+  max-height: calc(100dvh - 40px);
+  gap: 13px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(22px, 4vw, 36px);
+  border: 1px solid rgb(255 255 255 / 84%);
+  border-radius: 24px;
+  background: #fffaf0;
+  box-shadow: 0 22px 65px rgb(22 61 54 / 30%);
+  color: #244b46;
+}
+
+.keepsake-eyebrow {
+  margin: 0;
+  color: #668170;
+}
+
+.keepsake-card h2 {
+  margin: 0;
+  font-size: clamp(25px, 5vw, 34px);
+  letter-spacing: -0.045em;
+  line-height: 1.12;
+}
+
+.keepsake-intro,
+.keepsake-privacy {
+  margin: 0;
+  color: #55706a;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.keepsake-field {
+  display: grid;
+  gap: 6px;
+  color: #355a4d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.keepsake-field input,
+.keepsake-field select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 11px;
+  border: 1px solid #bdcfc0;
+  border-radius: 10px;
+  background: #fffefa;
+  color: #244b46;
+  font: inherit;
+  font-weight: 400;
+}
+
+.keepsake-field input:focus-visible,
+.keepsake-field select:focus-visible {
+  outline: 3px solid #e4a941;
+  outline-offset: 2px;
+}
+
+.keepsake-privacy {
+  padding-top: 10px;
+  border-top: 1px solid #e8e8d9;
+  font-size: 12px;
+}
+
+.keepsake-message {
+  min-height: 1.2em;
+  margin: 0;
+  color: #8a473d;
+  font-size: 12px;
+}
+
+.keepsake-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.keepsake-actions .start-button {
+  min-height: 44px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.quiet-button {
+  min-height: 40px;
+  padding: 0 10px;
+  border-color: #d7dfd1;
+  background: transparent;
+  color: #55706a;
+}
+
+.quiet-button:hover {
+  background: #edf4e9;
+}
+
+.quiet-button[hidden] {
   display: none;
 }
 
@@ -483,6 +635,20 @@ kbd {
 
   .top-bar {
     height: 62px;
+  }
+
+  .top-actions {
+    gap: 0;
+  }
+
+  .mode-label {
+    display: none;
+  }
+
+  .keepsake-button {
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: 10px;
   }
 
   .brand {

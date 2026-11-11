@@ -24,10 +24,14 @@ One stormy night, the Hearthbell rang only once. Its three star-notes scattered 
 
 1. **A quiet welcome.** The opening screen explains the storm, the silent bell, and the player's role as a Wayfinder. It gives the player a clear, gentle invitation to begin.
 2. **A small light in the meadow.** The player follows a stepping-stone path to Mori. The environment puts the hilltop bell in view so the destination is understandable before it is reached.
-3. **A memory returns.** Greeting Mori awakens three star-lights along the path. Mori remembers the Hearthbell and points the player toward the hill.
+3. **A memory returns.** Greeting Mori awakens three star-lights along the path. Mori remembers the Hearthbell and points the player toward the hill. At this natural pause, Mori may ask the player about an optional nickname and a few favorite things; each answer can be skipped.
 4. **The next promise.** The lights lead toward the bell: the next chapter beat is to discover what scattered its three notes and help Mori ring them home.
 
 The current build implements beats 1–3 as a short exploration slice. The hilltop bell and star-lights are a visible story hook; collecting notes, reaching/ringing the bell, saving progress, and co-op are not implemented yet.
+
+### The player's keepsake
+
+The optional keepsake asks only for a nickname and playful, fixed-choice preferences: a favorite color, meadow friend, and activity. It is saved in this browser's local storage, is not sent to a game server, and can be edited or forgotten from the in-game keepsake button. The player can skip the questions and still complete the story. Use preferences to make meaningful milestone dialogue and small presentation details feel familiar; never make a preference a requirement, expose it to other players, or ask a child for contact details or sensitive information.
 
 ### Play loop and emotional arc
 

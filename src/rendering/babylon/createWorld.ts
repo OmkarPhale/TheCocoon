@@ -7,11 +7,12 @@
  * deterministic makes the current scene straightforward to replace as the
  * game's setting and art direction become known.
  *
- * Geometry is deliberately procedural placeholder art. There is no imported
- * asset pipeline, collision system, physics world, player avatar, level
- * streaming, or multiplayer state in this scene yet.
+ * Geometry is deliberately procedural placeholder art. The camera uses a
+ * lightweight ellipsoid collision setup for grounding and solid scenery; this
+ * is not a full rigid-body physics world or a final terrain system.
  */
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
+import "@babylonjs/core/Collisions/collisionCoordinator";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { DirectionalLight } from "@babylonjs/core/Lights/directionalLight";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
@@ -25,7 +26,7 @@ import { Scene } from "@babylonjs/core/scene";
 export interface GameWorld {
   /** Scene rendered each frame by the Babylon engine's render loop. */
   scene: Scene;
-  /** First-person viewpoint; input currently moves this camera directly. */
+  /** First-person viewpoint moved through the collision-aware camera adapter. */
   camera: FreeCamera;
   /** Temporary objective whose proximity and discovery state drive the UI. */
   beacon: Mesh;
@@ -42,6 +43,7 @@ export function createWorld(
   canvas: HTMLCanvasElement,
 ): GameWorld {
   const scene = new Scene(engine);
+  scene.collisionsEnabled = true;
 
   // A soft sky tint and exponential fog keep the small placeholder world
   // bright, colorful, and visually calm without requiring a skybox asset.
@@ -65,6 +67,9 @@ export function createWorld(
   camera.keysDown = [];
   camera.keysLeft = [];
   camera.keysRight = [];
+  camera.ellipsoid = new Vector3(0.45, 0.9, 0.45);
+  camera.checkCollisions = true;
+  camera.applyGravity = false;
   camera.attachControl(canvas, true);
 
   // Soft sky fill and warm directional light help simple shapes feel sunny
@@ -96,10 +101,25 @@ export function createWorld(
     scene,
   );
   ground.material = groundMaterial;
+  ground.checkCollisions = true;
 
   const pathMaterial = new StandardMaterial("path-material", scene);
   pathMaterial.diffuseColor = new Color3(0.75, 0.66, 0.48);
   pathMaterial.specularColor = new Color3(0.12, 0.12, 0.1);
+
+  // A shallow, collision-aware ramp gives the visible bell a real approach.
+  // The mesh is a simple stand-in for a shaped hill until terrain art arrives.
+  const hillRamp = MeshBuilder.CreateBox(
+    "hilltop-approach-ramp",
+    { width: 14, height: 0.35, depth: 16 },
+    scene,
+  );
+  hillRamp.position.set(0, 0.12, 33);
+  hillRamp.rotation.x = -0.13;
+  hillRamp.material = groundMaterial;
+  hillRamp.checkCollisions = true;
+  const bellElevation =
+    0.12 + 0.175 + (39.75 - 33) * Math.sin(0.13);
 
   // A stepping-stone trail gives the opening a readable destination and keeps
   // the player from having to guess which way Mori is asking them to go.
@@ -147,6 +167,7 @@ export function createWorld(
     stone.position.set(position[0], position[1], position[2]);
     stone.scaling.set(1.05, 0.88 + (index % 3) * 0.12, 0.9);
     stone.material = landmarkMaterials[index % landmarkMaterials.length];
+    stone.checkCollisions = true;
   }
 
   const trunkMaterial = new StandardMaterial("tree-trunk-material", scene);
@@ -180,6 +201,7 @@ export function createWorld(
     );
     trunk.position.set(x, 2.1, z);
     trunk.material = trunkMaterial;
+    trunk.checkCollisions = true;
 
     for (let canopyPart = 0; canopyPart < 3; canopyPart += 1) {
       const canopy = MeshBuilder.CreateSphere(
@@ -194,6 +216,7 @@ export function createWorld(
       );
       canopy.scaling.set(1, 0.86, 0.95);
       canopy.material = canopyMaterials[(index + canopyPart) % canopyMaterials.length];
+      canopy.checkCollisions = true;
     }
   }
 
@@ -252,8 +275,9 @@ export function createWorld(
       { height: 5.3, diameter: 0.32, tessellation: 8 },
       scene,
     );
-    towerPost.position.set(x, 2.65, z);
+    towerPost.position.set(x, bellElevation + 2.65, z);
     towerPost.material = bellTowerMaterial;
+    towerPost.checkCollisions = true;
   }
 
   const towerRoof = MeshBuilder.CreateCylinder(
@@ -261,24 +285,27 @@ export function createWorld(
     { height: 1.8, diameterTop: 0, diameterBottom: 3.1, tessellation: 8 },
     scene,
   );
-  towerRoof.position.set(0, 5.9, 39.75);
+  towerRoof.position.set(0, bellElevation + 5.9, 39.75);
   towerRoof.material = landmarkMaterials[2];
+  towerRoof.checkCollisions = true;
 
   const towerBase = MeshBuilder.CreateCylinder(
     "hilltop-bell-base",
     { height: 0.5, diameterTop: 2.7, diameterBottom: 3.4, tessellation: 8 },
     scene,
   );
-  towerBase.position.set(0, 0.25, 39.75);
+  towerBase.position.set(0, bellElevation + 0.25, 39.75);
   towerBase.material = bellTowerMaterial;
+  towerBase.checkCollisions = true;
 
   const hilltopBell = MeshBuilder.CreateSphere(
     "hilltop-bell",
     { diameter: 1, segments: 12 },
     scene,
   );
-  hilltopBell.position.set(0, 4.05, 39.75);
+  hilltopBell.position.set(0, bellElevation + 4.05, 39.75);
   hilltopBell.material = bellMaterial;
+  hilltopBell.checkCollisions = true;
 
   // Give the glowing discovery a small friendly face. These meshes are parented
   // to the orb so its features stay attached if the objective is animated.
@@ -324,6 +351,7 @@ export function createWorld(
   );
   pedestal.position.set(0, 0.22, 18);
   pedestal.material = pedestalMaterial;
+  pedestal.checkCollisions = true;
 
   const halo = MeshBuilder.CreateTorus(
     "beacon-halo",

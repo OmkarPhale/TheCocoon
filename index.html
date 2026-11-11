@@ -93,7 +93,12 @@
           <span class="divider">/</span>
           <span class="edition">A little adventure</span>
         </div>
-        <span class="mode-label"><span></span> Chapter one · Starwake Meadow</span>
+        <div class="top-actions">
+          <span class="mode-label"><span></span> Chapter one · Starwake Meadow</span>
+          <button id="open-keepsake" class="keepsake-button" type="button">
+            Player keepsake
+          </button>
+        </div>
       </header>
       <section class="intro" aria-live="polite">
         <p id="story-eyebrow" class="eyebrow">Chapter one · The last note</p>
@@ -104,6 +109,83 @@
       <div id="proximity-hint" class="proximity-hint" hidden>
         <kbd>E</kbd> &nbsp; Say hello
       </div>
+      <section
+        id="keepsake-dialog"
+        class="keepsake-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="keepsake-title"
+        aria-describedby="keepsake-privacy"
+        hidden
+      >
+        <form id="keepsake-form" class="keepsake-card">
+          <p class="eyebrow keepsake-eyebrow">A little hello</p>
+          <h2 id="keepsake-title">What should Mori know about you?</h2>
+          <p class="keepsake-intro">
+            Share only what feels fun. Every answer is optional, and Mori can
+            still be your friend if you skip them.
+          </p>
+          <label class="keepsake-field">
+            <span>What nickname should Mori use?</span>
+            <input
+              id="player-nickname"
+              name="nickname"
+              type="text"
+              maxlength="16"
+              autocomplete="off"
+              placeholder="A nickname, or leave it blank"
+            />
+          </label>
+          <label class="keepsake-field">
+            <span>Which color feels like you?</span>
+            <select id="favorite-color" name="favoriteColor">
+              <option value="">I like them all</option>
+              <option value="gold">Sunny gold</option>
+              <option value="mint">Meadow mint</option>
+              <option value="sky">Sky blue</option>
+              <option value="violet">Berry violet</option>
+              <option value="coral">Coral pink</option>
+            </select>
+          </label>
+          <label class="keepsake-field">
+            <span>Which meadow friend would you love to meet?</span>
+            <select id="favorite-companion" name="favoriteCompanion">
+              <option value="">I would love to meet them all</option>
+              <option value="firefly">Fireflies</option>
+              <option value="moth">Moths</option>
+              <option value="rabbit">Rabbits</option>
+              <option value="bird">Little birds</option>
+            </select>
+          </label>
+          <label class="keepsake-field">
+            <span>What sounds like a lovely day?</span>
+            <select id="favorite-activity" name="favoriteActivity">
+              <option value="">A little bit of everything</option>
+              <option value="stargazing">Watching the stars</option>
+              <option value="exploring">Exploring new places</option>
+              <option value="helping">Helping friends</option>
+              <option value="collecting">Finding little treasures</option>
+            </select>
+          </label>
+          <p id="keepsake-privacy" class="keepsake-privacy">
+            If you save, your choices stay in this browser and are not sent to
+            a game server. Please use a nickname, not your full name. A grown-up
+            can help clear them later.
+          </p>
+          <p id="keepsake-message" class="keepsake-message" role="status"></p>
+          <div class="keepsake-actions">
+            <button id="save-keepsake" class="start-button" type="submit">
+              Save my choices
+            </button>
+            <button id="skip-keepsake" class="quiet-button" type="button">
+              Maybe later
+            </button>
+            <button id="clear-keepsake" class="quiet-button" type="button">
+              Forget saved choices
+            </button>
+          </div>
+        </form>
+      </section>
       <footer class="bottom-bar">
         <div class="controls">
           <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</span>

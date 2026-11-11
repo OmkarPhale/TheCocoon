@@ -19,13 +19,15 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [x] Recorded the repository visibility decision for review during release planning.
 - [x] Added an illustrated, child-friendly welcome screen and a clear start-to-play flow.
 - [x] Gave the first exploration slice a named story premise, character, destination, and visible next-step hook.
+- [x] Added an optional, editable browser-only player keepsake and used its preferences in Mori's first milestone response.
+- [x] Added accelerated grounded movement, gravity, solid scenery collisions, and a gentle collision-aware approach ramp.
 
 ## Planned
 
 - [ ] Playtest the Wayfinder, Mori, and Hearthbell story beat with children and their parents/guardians; revise based on what they understand and enjoy.
 - [ ] Define the first playable scope, including session flow and a small co-op player count.
 - [ ] Confirm WebGL 2 support and the intended fallback behavior across target browsers.
-- [ ] Playtest the discovery loop and refine movement, camera feel, and interaction feedback.
+- [ ] Playtest the discovery loop and refine movement, camera feel, collision tuning, and interaction feedback.
 - [ ] Get feedback on the welcome screen, tone, and companion from children and their parents/guardians before finalizing the art direction.
 - [ ] Revisit code splitting and load performance before broader release; the Babylon.js bundle is about 1.08 MB uncompressed (264 KB gzip).
 - [ ] Add a minimal real-time co-op session and test solo and co-op paths.
@@ -38,7 +40,7 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [ ] Decide exact browser/device support and initial performance targets.
 - [ ] Confirm engine and rendering fallback after a prototype.
 - [ ] Choose multiplayer session and hosting architecture.
-- [ ] Define save/account needs and any privacy or moderation requirements.
+- [ ] Define future account/co-op save needs and privacy or moderation requirements; current personal keepsake is optional, local-only, and not shared.
 - [ ] Revisit mobile, native desktop, console, and cloud-streaming targets after browser validation.
 - [ ] Select Windows/macOS/Linux desktop and Android/iOS integration strategies before adding native project files.
 - [ ] Verify offline installation from a clean checkout on every machine intended for disconnected development.

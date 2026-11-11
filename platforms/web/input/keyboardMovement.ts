@@ -1,20 +1,14 @@
 /**
- * Minimal desktop keyboard movement for the first exploration test.
+ * Desktop keyboard movement for the first exploration slice.
  *
- * This module owns only movement-key state and translation. Babylon's camera
- * remains responsible for pointer/mouse look in the web host. The returned function is called
- * once per render frame by main.ts, which keeps input collection separate
- * from applying movement to the scene.
- *
- * There is deliberately no physics, collision, gravity, sprint, touch input,
- * rebinding UI, or network prediction yet; the camera can pass through the
- * prototype's placeholder geometry.
+ * This module owns movement-key state and a small character-motion model.
+ * Babylon's camera remains responsible for pointer look and collision-aware
+ * position updates. The physical units are deliberately game-tuned rather
+ * than presented as a measured real-world simulation.
  */
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 
-// Store normalized KeyboardEvent.key values so both letter keys and arrow
-// keys share the same movement logic regardless of letter-case reporting.
 const movementKeys = new Set([
   "w",
   "a",
@@ -26,45 +20,64 @@ const movementKeys = new Set([
   "arrowright",
 ]);
 
-// World-space movement speed in scene units per second. A physical scale has
-// not been defined, so these units are a tuning value rather than meters.
 const movementSpeed = 5.5;
+const acceleration = 18;
+const braking = 24;
+const gravity = 22;
+const maximumFallSpeed = 20;
 
 export function createKeyboardMovement(
   camera: FreeCamera,
+  isEnabled: () => boolean,
 ): (deltaMs: number) => void {
   const pressedKeys = new Set<string>();
+  const horizontalVelocity = Vector3.Zero();
+  let verticalVelocity = 0;
 
-  // Listen on window instead of the canvas so a key continues to work after
-  // the user clicks the game UI. Prevent browser scrolling for movement keys,
-  // especially the arrow keys.
+  // A downward collision is the landing signal for this camera-sized body.
+  camera.onCollide = () => {
+    if (verticalVelocity < 0) {
+      verticalVelocity = 0;
+    }
+  };
+
+  // Listen on window so keys still work after clicking the canvas. Ignore
+  // movement while a modal or another blocking game state is active.
   window.addEventListener("keydown", (event) => {
     const key = event.key.toLowerCase();
-    if (movementKeys.has(key)) {
+    if (movementKeys.has(key) && isEnabled()) {
       pressedKeys.add(key);
       event.preventDefault();
     }
   });
 
-  // Keyup may arrive after focus has moved away from the canvas. Removing the
-  // key here prevents a held movement state from surviving the normal release.
   window.addEventListener("keyup", (event) => {
     pressedKeys.delete(event.key.toLowerCase());
   });
 
-  // Browsers can lose keyup events when a tab is backgrounded or focus changes.
-  // Clearing state on blur prevents the camera from continuing to walk away.
-  window.addEventListener("blur", () => pressedKeys.clear());
+  // Clear movement if the browser loses focus so a key cannot remain held.
+  window.addEventListener("blur", () => {
+    pressedKeys.clear();
+    horizontalVelocity.set(0, 0, 0);
+    verticalVelocity = 0;
+    camera.cameraDirection.set(0, 0, 0);
+  });
 
   return (deltaMs) => {
-    // Babylon cameras face local +Z by default. Transform that direction by
-    // the camera orientation, then flatten it so looking up/down does not make
-    // the player fly or sink while walking.
+    if (!isEnabled()) {
+      pressedKeys.clear();
+      horizontalVelocity.set(0, 0, 0);
+      verticalVelocity = 0;
+      camera.cameraDirection.set(0, 0, 0);
+      return;
+    }
+
+    // Flatten the view direction so looking up or down never changes the
+    // player's height while walking.
     const forward = camera.getDirection(Vector3.Forward());
     forward.y = 0;
     forward.normalize();
 
-    // For a Y-up world, Up x Forward yields the camera-relative right vector.
     const right = Vector3.Cross(Vector3.Up(), forward).normalize();
     const movement = Vector3.Zero();
 
@@ -81,14 +94,34 @@ export function createKeyboardMovement(
       movement.subtractInPlace(right);
     }
 
-    if (movement.lengthSquared() > 0) {
-      // Combining two keys must not make diagonal travel faster. The 50 ms
-      // cap also avoids a large teleport if rendering pauses and later resumes
-      // after a background tab or a long frame.
-      const elapsedSeconds = Math.min(deltaMs / 1000, 0.05);
-      camera.position.addInPlace(
-        movement.normalize().scale(movementSpeed * elapsedSeconds),
+    // Cap elapsed time so a paused tab cannot accumulate a large movement or
+    // fall step. Normalizing the input keeps diagonal walking at the same pace.
+    const elapsedSeconds = Math.min(deltaMs / 1000, 0.05);
+    const targetVelocity =
+      movement.lengthSquared() > 0
+        ? movement.normalize().scale(movementSpeed)
+        : Vector3.Zero();
+    const velocityChange = targetVelocity.subtract(horizontalVelocity);
+    const maximumChange =
+      (targetVelocity.lengthSquared() > 0 ? acceleration : braking) *
+      elapsedSeconds;
+
+    if (velocityChange.length() <= maximumChange) {
+      horizontalVelocity.copyFrom(targetVelocity);
+    } else {
+      horizontalVelocity.addInPlace(
+        velocityChange.normalize().scale(maximumChange),
       );
     }
+
+    verticalVelocity = Math.max(
+      verticalVelocity - gravity * elapsedSeconds,
+      -maximumFallSpeed,
+    );
+    camera.cameraDirection.set(
+      horizontalVelocity.x * elapsedSeconds,
+      verticalVelocity * elapsedSeconds,
+      horizontalVelocity.z * elapsedSeconds,
+    );
   };
 }
