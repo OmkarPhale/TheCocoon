@@ -1,0 +1,250 @@
+:root {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #e7f2eb;
+  background: #071311;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  min-width: 320px;
+  min-height: 420px;
+}
+
+.game-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 70%, rgb(13 49 40 / 30%), transparent 58%),
+    #071311;
+}
+
+#game-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  touch-action: none;
+}
+
+.top-bar,
+.bottom-bar {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: clamp(20px, 5vw, 72px);
+  padding-left: clamp(20px, 5vw, 72px);
+  font-size: 12px;
+}
+
+.top-bar {
+  top: 0;
+  height: 76px;
+  border-bottom: 1px solid rgb(212 240 224 / 10%);
+  background: linear-gradient(180deg, rgb(5 17 15 / 68%), transparent);
+}
+
+.brand,
+.mode-label,
+.controls,
+.controls > span {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 10px;
+  font-weight: 600;
+}
+
+.brand-mark {
+  width: 9px;
+  height: 9px;
+  border: 1px solid #78e8b6;
+  transform: rotate(45deg);
+  box-shadow: 0 0 12px rgb(120 232 182 / 55%);
+}
+
+.divider {
+  color: rgb(218 241 227 / 35%);
+}
+
+.edition,
+.build-label {
+  color: rgb(218 241 227 / 47%);
+  font-size: 11px;
+}
+
+.mode-label {
+  gap: 9px;
+  color: rgb(218 241 227 / 70%);
+  font-size: 11px;
+}
+
+.mode-label > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #78e8b6;
+  box-shadow: 0 0 9px rgb(120 232 182 / 75%);
+}
+
+.intro {
+  position: absolute;
+  top: 19%;
+  left: 50%;
+  width: min(440px, calc(100% - 40px));
+  text-align: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+  text-shadow: 0 2px 24px rgb(0 0 0 / 60%);
+}
+
+.eyebrow {
+  margin: 0 0 13px;
+  color: #83dcb2;
+  font-size: 11px;
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: clamp(27px, 4vw, 39px);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+}
+
+.intro p:last-child {
+  margin: 10px 0 0;
+  color: rgb(230 243 234 / 67%);
+  font-size: 12px;
+}
+
+.reticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border: 1px solid rgb(229 247 235 / 75%);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgb(229 247 235 / 40%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.proximity-hint {
+  position: absolute;
+  bottom: 19%;
+  left: 50%;
+  color: #d7eee0;
+  font-size: 12px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.proximity-hint[hidden] {
+  display: none;
+}
+
+.bottom-bar {
+  bottom: 0;
+  min-height: 74px;
+  border-top: 1px solid rgb(212 240 224 / 10%);
+  background: linear-gradient(0deg, rgb(5 17 15 / 76%), transparent);
+}
+
+.controls {
+  gap: clamp(13px, 3vw, 34px);
+  color: rgb(218 241 227 / 66%);
+  font-size: 11px;
+}
+
+.controls > span {
+  gap: 5px;
+}
+
+kbd {
+  display: inline-grid;
+  min-width: 19px;
+  height: 19px;
+  place-items: center;
+  border: 1px solid rgb(218 241 227 / 23%);
+  border-radius: 4px;
+  color: #e7f2eb;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.mouse-icon {
+  position: relative;
+  width: 13px;
+  height: 18px;
+  border: 1px solid rgb(218 241 227 / 52%);
+  border-radius: 7px;
+}
+
+.mouse-icon::after {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 1px;
+  height: 4px;
+  background: #d7eee0;
+  content: "";
+}
+
+@media (max-width: 540px) {
+  .top-bar {
+    height: 62px;
+  }
+
+  .brand {
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .edition,
+  .build-label {
+    display: none;
+  }
+
+  .bottom-bar {
+    min-height: 65px;
+  }
+
+  .controls {
+    gap: 12px;
+    font-size: 10px;
+  }
+
+  .controls > span {
+    gap: 3px;
+  }
+
+  .controls > span:nth-child(2) {
+    display: none;
+  }
+}
