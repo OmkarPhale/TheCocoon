@@ -1,0 +1,56 @@
+# Game brief
+
+_Living document: revise as decisions are tested with a playable build and player feedback._
+
+## Project intent
+
+Develop a polished game that can reach players across platforms over time. Begin with a browser release to make playable feedback quick and accessible. The current workspace name, TheCocoon, is not a confirmed game title.
+
+## Current decisions
+
+| Topic | Decision |
+|---|---|
+| First release focus | Browser-first playable game |
+| Initial game direction | 3D exploration and discovery |
+| Play modes | Solo and real-time co-op |
+| First gameplay scope | One compact area, basic movement and camera, and one discovery to find |
+| Feature sequence | Exploration first; then puzzles, collection/extraction, and survival gradually |
+| Provisional rendering stack | TypeScript + Babylon.js |
+| Rendering compatibility direction | WebGL 2 baseline; WebGPU may be an optional enhancement |
+| Cloud game streaming | Not in the current scope |
+| Code organization | Platform-independent game rules; separate rendering and platform-host adapters |
+| Offline workflow | Local browser development/build after Node.js, dependencies, and assets are available |
+
+## Prototype status
+
+The first browser prototype currently provides a small 3D scene, keyboard/mouse navigation, and a nearby beacon interaction. The beacon is a temporary stand-in for a discovery objective, not a finalized game mechanic or setting. The prototype is currently solo-only; real-time co-op remains a planned feature.
+
+## Design principles
+
+- Keep the first playable build small enough to test early.
+- Make the discovery loop work for a solo player and remain enjoyable in co-op.
+- Add features in measured steps; use player feedback to guide expansion.
+- Keep platform-specific capabilities behind the engine and browser APIs where practical.
+- Treat desktop browsers as the initial development target; evaluate mobile browser support as a separate compatibility and usability check.
+
+## Open decisions
+
+These are intentionally unresolved; do not treat the provisional direction as a final technical commitment.
+
+- Game setting, tone, visual style, and final title.
+- The specific discovery objective and what makes exploration rewarding.
+- Intended player count and how players join a co-op session.
+- Browser/device support matrix and performance targets.
+- Whether Babylon.js remains the best fit after a minimal rendering prototype.
+- Whether desktop/mobile apps should use a WebView shell or a separate native rendering/runtime approach.
+- Multiplayer architecture, hosting provider, and server authority model.
+- Save data, accounts, progression, privacy, and moderation requirements.
+- Whether and when to pursue native mobile, desktop, console, or cloud-streaming releases.
+
+## Technical notes
+
+Real-time co-op requires online session coordination and synchronization, even when the game is browser-based. The first implementation should keep that scope small and avoid committing to a backend provider until player count, session flow, and game-state needs are clearer.
+
+WebGPU is an enhancement target, not a requirement for the initial build. Validate the chosen engine's browser support and fallback behavior during setup rather than assuming every device supports the same graphics features.
+
+Keep the source repository private during development by default. Revisit repository visibility, licensing, shipped client code, and server-side secret handling during the release phase. Browser-delivered code and assets should be treated as publicly inspectable even when the repository is private.

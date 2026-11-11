@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title description">
+  <title id="title">TheCocoon browser prototype architecture</title>
+  <desc id="description">A technical overview of the currently implemented browser-only solo prototype. Keyboard input drives camera movement; the application loop updates a Babylon.js scene and discovery prompt; browser graphics APIs render the scene. A dashed, separate box marks the real-time multiplayer service as a future capability that is not implemented.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#081815"/>
+      <stop offset="1" stop-color="#0b211c"/>
+    </linearGradient>
+    <linearGradient id="implemented" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12332b"/>
+      <stop offset="1" stop-color="#102821"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1L11 6L1 11" fill="none" stroke="#75dfb1" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="futureArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1L11 6L1 11" fill="none" stroke="#93a89d" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; fill: #e8f4ec; }
+      .mono { font-family: Consolas, "Courier New", monospace; letter-spacing: 0.6px; }
+      .muted { fill: #a4b9ad; }
+      .dim { fill: #70877b; }
+      .accent { fill: #83e4b7; }
+      .panel { fill: #0c201b; stroke: #28443a; stroke-width: 1.4; }
+      .module { fill: url(#implemented); stroke: #4a7562; stroke-width: 1.4; }
+      .future { fill: #121d1a; stroke: #75867d; stroke-width: 1.5; stroke-dasharray: 8 7; }
+      .divider { stroke: #294239; stroke-width: 1; }
+      .flow { fill: none; stroke: #75dfb1; stroke-width: 2; marker-end: url(#arrow); }
+      .futureFlow { fill: none; stroke: #93a89d; stroke-width: 1.7; stroke-dasharray: 7 7; marker-end: url(#futureArrow); }
+      .step { fill: #10251f; stroke: #3a5b4c; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1120" fill="url(#background)"/>
+  <path d="M0 180H1600M0 1070H1600" stroke="#243d33" stroke-width="1"/>
+
+  <text x="88" y="72" class="mono accent" font-size="13">TheCocoon  /  Technical overview</text>
+  <text x="88" y="130" font-size="42" font-weight="600" letter-spacing="-1.5">Browser exploration prototype</text>
+  <text x="90" y="161" class="muted" font-size="16">Runtime architecture · current implementation, not a production or multiplayer claim</text>
+
+  <rect x="1227" y="68" width="285" height="42" rx="21" fill="#16382e" stroke="#4b8c6e"/>
+  <circle cx="1252" cy="89" r="5" fill="#83e4b7"/>
+  <text x="1268" y="94" class="mono accent" font-size="11">Implemented slice · solo</text>
+
+  <rect x="78" y="213" width="1036" height="762" rx="18" class="panel"/>
+  <text x="108" y="254" class="mono accent" font-size="12">Browser client  /  TypeScript + Babylon.js</text>
+  <text x="108" y="280" class="muted" font-size="14">The web host connects player input and presentation to shared rules and the scene.</text>
+
+  <rect x="117" y="328" width="220" height="177" rx="12" class="module"/>
+  <text x="140" y="362" class="mono accent" font-size="11">01 · Player</text>
+  <text x="140" y="397" font-size="21" font-weight="600">Keyboard + mouse</text>
+  <text x="140" y="429" class="muted" font-size="14">WASD / arrows move</text>
+  <text x="140" y="452" class="muted" font-size="14">Pointer controls camera</text>
+  <text x="140" y="483" class="dim" font-size="12">Desktop input only</text>
+
+  <rect x="391" y="328" width="290" height="177" rx="12" class="module"/>
+  <text x="414" y="362" class="mono accent" font-size="11">02 · Input adapter</text>
+  <text x="414" y="397" font-size="21" font-weight="600">Keyboard movement</text>
+  <text x="414" y="429" class="muted" font-size="14">Tracks pressed keys; clears on blur</text>
+  <text x="414" y="452" class="muted" font-size="14">Normalizes diagonals; caps delta</text>
+  <text x="414" y="483" class="mono dim" font-size="12">platforms/web/input/keyboardMovement.ts</text>
+
+  <rect x="735" y="328" width="333" height="177" rx="12" class="module"/>
+  <text x="758" y="362" class="mono accent" font-size="11">03 · Application composition</text>
+  <text x="758" y="397" font-size="21" font-weight="600">Entry point + frame loop</text>
+  <text x="758" y="429" class="muted" font-size="14">Coordinates input, UI, and rendering</text>
+  <text x="758" y="452" class="muted" font-size="14">Coordinates the discovery state</text>
+  <text x="758" y="483" class="mono dim" font-size="12">platforms/web/main.ts</text>
+
+  <path d="M337 416H386" class="flow"/>
+  <path d="M681 416H730" class="flow"/>
+
+  <rect x="391" y="563" width="677" height="244" rx="12" class="module"/>
+  <text x="416" y="598" class="mono accent" font-size="11">04 · Scene factory  /  Babylon.js</text>
+  <text x="416" y="634" font-size="22" font-weight="600">Scene, camera, environment, beacon</text>
+  <line x1="416" y1="652" x2="1042" y2="652" class="divider"/>
+  <text x="416" y="684" class="muted" font-size="14">• Camera translation is controlled by the input adapter.</text>
+  <text x="416" y="710" class="muted" font-size="14">• Pointer look and scene rendering are handled by Babylon.js.</text>
+  <text x="416" y="736" class="muted" font-size="14">• Shared discovery rules stay separate from both adapters.</text>
+  <text x="416" y="762" class="muted" font-size="14">• E updates local presentation; there is no persistence or authority.</text>
+  <text x="416" y="790" class="mono dim" font-size="12">src/rendering/babylon/createWorld.ts · no physics, collision, or save system</text>
+
+  <path d="M536 505V548" class="flow"/>
+  <path d="M901 505V548" class="flow"/>
+  <rect x="391" y="860" width="677" height="76" rx="12" class="step"/>
+  <text x="416" y="891" class="mono accent" font-size="11">05 · Browser rendering</text>
+  <text x="416" y="918" class="muted" font-size="14">Babylon Engine → browser graphics API → GPU → displayed frame</text>
+  <path d="M730 807V845" class="flow"/>
+
+  <rect x="1151" y="213" width="371" height="762" rx="18" fill="#0c1a17" stroke="#3b5147" stroke-width="1.4"/>
+  <text x="1180" y="254" class="mono muted" font-size="12">Boundaries &amp; next milestones</text>
+  <text x="1180" y="280" class="dim" font-size="13">Explicitly separate from what runs today</text>
+
+  <rect x="1180" y="328" width="313" height="213" rx="12" class="future"/>
+  <text x="1203" y="363" class="mono muted" font-size="11">Future · not implemented</text>
+  <text x="1203" y="399" font-size="20" font-weight="600">Authoritative game service</text>
+  <text x="1203" y="434" class="muted" font-size="14">• Co-op session / room lifecycle</text>
+  <text x="1203" y="461" class="muted" font-size="14">• Validated shared game state</text>
+  <text x="1203" y="488" class="muted" font-size="14">• Hosting, persistence, observability</text>
+  <text x="1203" y="520" class="dim" font-size="12">Protocol and provider still undecided</text>
+
+  <path d="M1068 416H1126V384H1173" class="futureFlow"/>
+  <text x="1092" y="397" class="dim" font-size="10">Later</text>
+
+  <rect x="1180" y="575" width="313" height="166" rx="12" class="future"/>
+  <text x="1203" y="610" class="mono muted" font-size="11">Future · not implemented</text>
+  <text x="1203" y="646" font-size="20" font-weight="600">Static web deployment</text>
+  <text x="1203" y="679" class="muted" font-size="14">Built files can be hosted as a website.</text>
+  <text x="1203" y="706" class="muted" font-size="14">No deployment target is configured.</text>
+
+  <rect x="1180" y="777" width="313" height="128" rx="12" fill="#101c19" stroke="#33463e"/>
+  <text x="1203" y="812" class="mono accent" font-size="11">Trust boundary</text>
+  <text x="1203" y="845" class="muted" font-size="14">Browser code and assets are inspectable.</text>
+  <text x="1203" y="872" class="muted" font-size="14">Validate shared decisions server-side.</text>
+
+  <text x="90" y="1030" class="mono muted" font-size="11">Current: browser-local scene + discovery  /  No network traffic or cloud streaming</text>
+  <text x="1508" y="1030" text-anchor="end" class="mono dim" font-size="11">TheCocoon · Technical reference</text>
+</svg>
