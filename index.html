@@ -7,35 +7,104 @@
       name="description"
       content="A browser-first 3D exploration prototype."
     />
-    <meta name="theme-color" content="#071311" />
-    <title>TheCocoon — Field test 001</title>
+    <meta name="theme-color" content="#e9f8ee" />
+    <title>The Cocoon — A little adventure</title>
   </head>
   <body>
     <main class="game-shell">
-      <canvas id="game-canvas" aria-label="3D exploration game"></canvas>
+      <canvas
+        id="game-canvas"
+        aria-label="3D exploration game"
+        aria-hidden="true"
+        tabindex="-1"
+      ></canvas>
+      <section
+        id="welcome-screen"
+        class="welcome-screen"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="welcome-title"
+      >
+        <div class="welcome-card">
+          <div class="welcome-copy">
+            <p class="welcome-kicker">A little world to wander through</p>
+            <h1 id="welcome-title">The Cocoon</h1>
+            <p class="welcome-description">
+              Something cheerful is glowing among the stones. Shall we go and
+              say hello?
+            </p>
+            <button id="start-game" class="start-button" type="button">
+              Let's explore <span aria-hidden="true">→</span>
+            </button>
+            <p class="welcome-note">Take your time. There's no rush.</p>
+          </div>
+          <div class="welcome-art" aria-hidden="true">
+            <svg
+              class="welcome-illustration"
+              viewBox="0 0 360 280"
+              role="presentation"
+            >
+              <ellipse cx="180" cy="236" rx="131" ry="17" fill="#d3ead0" />
+              <path
+                d="M75 227c10-25 34-32 52-20 11-27 40-30 55-5 17-28 48-21 56 5 24-19 47-5 51 20"
+                fill="#8fc99b"
+              />
+              <circle cx="75" cy="62" r="5" fill="#f3bd55" />
+              <circle cx="282" cy="86" r="4" fill="#83b9d1" />
+              <path d="M103 91l5 8 9 2-7 6 1 9-8-5-8 4 2-9-6-7 9-1z" fill="#f3bd55" />
+              <path d="M258 44l4 7 8 1-6 5 1 8-7-4-7 4 2-8-6-5 8-1z" fill="#f3bd55" />
+              <circle cx="180" cy="139" r="70" fill="#fbe39a" opacity=".55" />
+              <circle cx="180" cy="139" r="54" fill="#ffd46e" />
+              <circle cx="180" cy="139" r="42" fill="#72cfbd" />
+              <ellipse cx="166" cy="135" rx="4" ry="6" fill="#174a52" />
+              <ellipse cx="194" cy="135" rx="4" ry="6" fill="#174a52" />
+              <path
+                d="M168 151c7 9 17 9 24 0"
+                fill="none"
+                stroke="#174a52"
+                stroke-linecap="round"
+                stroke-width="4"
+              />
+              <circle cx="154" cy="148" r="6" fill="#ee8d80" opacity=".75" />
+              <circle cx="206" cy="148" r="6" fill="#ee8d80" opacity=".75" />
+              <path
+                d="M124 205c-11-18-8-32 4-38 13 13 13 26-4 38zm112 0c11-18 8-32-4-38-13 13-13 26 4 38z"
+                fill="#6cae7e"
+              />
+              <path d="M128 221h-28l-8-28 27-4zm104 0h28l8-28-27-4z" fill="#a88cce" />
+              <path d="M111 189l9 18-21 12-7-26zm138 0l-9 18 21 12 7-26z" fill="#f39a78" />
+            </svg>
+          </div>
+          <div class="welcome-controls" aria-label="How to play">
+            <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to wander</span>
+            <span><span class="welcome-mouse" aria-hidden="true"></span> to look around</span>
+            <span><kbd>E</kbd> to say hello</span>
+          </div>
+        </div>
+      </section>
       <header class="top-bar">
         <div class="brand">
           <span class="brand-mark" aria-hidden="true"></span>
-          <span>TheCocoon</span>
+          <span>The Cocoon</span>
           <span class="divider">/</span>
-          <span class="edition">Field test 001</span>
+          <span class="edition">A little adventure</span>
         </div>
-        <span class="mode-label"><span></span> Solo preview</span>
+        <span class="mode-label"><span></span> Playing on your own</span>
       </header>
       <section class="intro" aria-live="polite">
-        <p class="eyebrow">A quiet signal, somewhere ahead</p>
-        <h1 id="status-title">Find the signal.</h1>
-        <p id="status-copy">A distant beacon is waiting to be discovered.</p>
+        <p class="eyebrow">A friend is waiting</p>
+        <h2 id="status-title">Can you find the little light?</h2>
+        <p id="status-copy">Follow the glow and see what you discover.</p>
       </section>
       <div class="reticle" aria-hidden="true"></div>
       <div id="proximity-hint" class="proximity-hint" hidden>
-        <kbd>E</kbd> &nbsp; Investigate
+        <kbd>E</kbd> &nbsp; Say hello
       </div>
       <footer class="bottom-bar">
         <div class="controls">
           <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</span>
           <span><span class="mouse-icon" aria-hidden="true"></span> Look</span>
-          <span><kbd>E</kbd> Interact</span>
+          <span><kbd>E</kbd> Say hello</span>
         </div>
         <span class="build-label">Prototype · 0.1</span>
       </footer>

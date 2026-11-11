@@ -17,6 +17,7 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [x] Documented platform extension points and offline setup constraints.
 - [x] Verified dependency installation with `npm ci --offline` using the existing local npm cache.
 - [x] Recorded the repository visibility decision for review during release planning.
+- [x] Added an illustrated, child-friendly welcome screen and a clear start-to-play flow.
 
 ## Planned
 
@@ -24,6 +25,7 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [ ] Define the first playable scope, including session flow and a small co-op player count.
 - [ ] Confirm WebGL 2 support and the intended fallback behavior across target browsers.
 - [ ] Playtest the discovery loop and refine movement, camera feel, and interaction feedback.
+- [ ] Get feedback on the welcome screen, tone, and companion from children and their parents/guardians before finalizing the art direction.
 - [ ] Revisit code splitting and load performance before broader release; the Babylon.js bundle is about 1.08 MB uncompressed (264 KB gzip).
 - [ ] Add a minimal real-time co-op session and test solo and co-op paths.
 - [ ] Gather feedback from players and prioritize the next gameplay increment.

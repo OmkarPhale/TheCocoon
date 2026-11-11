@@ -39,12 +39,12 @@ export function createWorld(
 ): GameWorld {
   const scene = new Scene(engine);
 
-  // A dark green clear color and exponential fog establish a simple visual
-  // treatment while hiding the edge of the deliberately empty test space.
-  scene.clearColor = new Color4(0.025, 0.07, 0.065, 1);
+  // A soft sky tint and exponential fog keep the small placeholder world
+  // bright, colorful, and visually calm without requiring a skybox asset.
+  scene.clearColor = new Color4(0.55, 0.79, 0.81, 1);
   scene.fogMode = Scene.FOGMODE_EXP;
-  scene.fogDensity = 0.008;
-  scene.fogColor = new Color3(0.025, 0.07, 0.065);
+  scene.fogDensity = 0.012;
+  scene.fogColor = new Color3(0.55, 0.79, 0.81);
 
   // The camera is placed at approximate standing eye height and initially
   // looks toward the center of the test space. Babylon handles pointer look;
@@ -63,8 +63,8 @@ export function createWorld(
   camera.keysRight = [];
   camera.attachControl(canvas, true);
 
-  // Two inexpensive lights make primitive materials readable without adding
-  // environment maps or post-processing to this first rendering test.
+  // Soft sky fill and warm directional light help simple shapes feel sunny
+  // and welcoming without adding expensive post-processing.
   const ambient = new HemisphericLight(
     "ambient-light",
     new Vector3(0.2, 1, 0.1),
@@ -77,14 +77,14 @@ export function createWorld(
     new Vector3(-0.4, -1, 0.3),
     scene,
   );
-  moonlight.diffuse = new Color3(0.47, 0.77, 0.7);
-  moonlight.intensity = 1.1;
+  moonlight.diffuse = new Color3(1, 0.86, 0.65);
+  moonlight.intensity = 1.25;
 
-  // The ground and box landmarks are navigation cues, not final level art.
-  // This is a visual-only scene: these meshes do not currently block movement.
+  // The meadow uses a soft green floor rather than the darker placeholder
+  // palette from the first technical rendering test.
   const groundMaterial = new StandardMaterial("ground-material", scene);
-  groundMaterial.diffuseColor = new Color3(0.09, 0.18, 0.16);
-  groundMaterial.specularColor = new Color3(0.12, 0.2, 0.18);
+  groundMaterial.diffuseColor = new Color3(0.32, 0.58, 0.37);
+  groundMaterial.specularColor = new Color3(0.16, 0.22, 0.15);
   const ground = MeshBuilder.CreateGround(
     "ground",
     { width: 100, height: 100, subdivisions: 2 },
@@ -92,9 +92,20 @@ export function createWorld(
   );
   ground.material = groundMaterial;
 
-  const stoneMaterial = new StandardMaterial("stone-material", scene);
-  stoneMaterial.diffuseColor = new Color3(0.13, 0.25, 0.21);
-  stoneMaterial.specularColor = new Color3(0.08, 0.12, 0.1);
+  // Pastel landmark colors are temporary, readable navigation cues. Each
+  // material is shared across multiple low-poly boulders to keep draw setup
+  // modest while avoiding a line of identical dark boxes.
+  const landmarkMaterials = [
+    new Color3(0.82, 0.56, 0.43),
+    new Color3(0.73, 0.65, 0.86),
+    new Color3(0.91, 0.73, 0.38),
+    new Color3(0.4, 0.69, 0.61),
+  ].map((color, index) => {
+    const material = new StandardMaterial(`landmark-material-${index}`, scene);
+    material.diffuseColor = color;
+    material.specularColor = new Color3(0.2, 0.2, 0.2);
+    return material;
+  });
 
   const landmarks = [
     [-7, 1.3, -1],
@@ -106,14 +117,14 @@ export function createWorld(
   ];
 
   for (const [index, position] of landmarks.entries()) {
-    const stone = MeshBuilder.CreateBox(
-      `landmark-${index}`,
-      { width: 2.4, height: 2.6, depth: 2.4 },
+    const stone = MeshBuilder.CreateSphere(
+      `meadow-boulder-${index}`,
+      { diameter: 2.4, segments: 10 },
       scene,
     );
     stone.position.set(position[0], position[1], position[2]);
-    stone.rotation.y = index * 0.43;
-    stone.material = stoneMaterial;
+    stone.scaling.set(1.05, 0.88 + (index % 3) * 0.12, 0.9);
+    stone.material = landmarkMaterials[index % landmarkMaterials.length];
   }
 
   // Emissive light lets the objective remain visible through the fog. The
@@ -132,13 +143,50 @@ export function createWorld(
   beacon.position.set(0, 1.65, 18);
   beacon.material = beaconMaterial;
 
+  // Give the glowing discovery a small friendly face. These meshes are parented
+  // to the orb so its features stay attached if the objective is animated.
+  const faceMaterial = new StandardMaterial("beacon-face-material", scene);
+  faceMaterial.diffuseColor = new Color3(0.09, 0.22, 0.24);
+  faceMaterial.emissiveColor = new Color3(0.03, 0.07, 0.08);
+
+  for (const [index, eyeX] of [-0.14, 0.14].entries()) {
+    const eye = MeshBuilder.CreateSphere(
+      `beacon-eye-${index}`,
+      { diameter: 0.085, segments: 8 },
+      scene,
+    );
+    eye.parent = beacon;
+    eye.position.set(eyeX, 0.075, -0.375);
+    eye.material = faceMaterial;
+  }
+
+  const smile = MeshBuilder.CreateTube(
+    "beacon-smile",
+    {
+      path: [
+        new Vector3(-0.1, -0.07, -0.38),
+        new Vector3(0, -0.12, -0.4),
+        new Vector3(0.1, -0.07, -0.38),
+      ],
+      radius: 0.016,
+      tessellation: 6,
+    },
+    scene,
+  );
+  smile.parent = beacon;
+  smile.material = faceMaterial;
+
+  const pedestalMaterial = new StandardMaterial("pedestal-material", scene);
+  pedestalMaterial.diffuseColor = new Color3(0.83, 0.67, 0.43);
+  pedestalMaterial.specularColor = new Color3(0.2, 0.18, 0.12);
+
   const pedestal = MeshBuilder.CreateCylinder(
     "beacon-pedestal",
     { height: 0.45, diameterTop: 1.3, diameterBottom: 1.8, tessellation: 8 },
     scene,
   );
   pedestal.position.set(0, 0.22, 18);
-  pedestal.material = stoneMaterial;
+  pedestal.material = pedestalMaterial;
 
   const halo = MeshBuilder.CreateTorus(
     "beacon-halo",
@@ -154,7 +202,6 @@ export function createWorld(
   // offset uses a monotonic browser clock for a smooth floating effect.
   scene.onBeforeRenderObservable.add(() => {
     const elapsed = scene.getEngine().getDeltaTime();
-    beacon.rotation.y += elapsed * 0.0007;
     beacon.position.y = 1.65 + Math.sin(performance.now() * 0.0015) * 0.14;
     halo.rotation.z += elapsed * 0.0002;
   });

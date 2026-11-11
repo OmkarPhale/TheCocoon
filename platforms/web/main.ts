@@ -23,11 +23,20 @@ const canvas = document.querySelector<HTMLCanvasElement>("#game-canvas");
 const statusTitle = document.querySelector<HTMLElement>("#status-title");
 const statusCopy = document.querySelector<HTMLElement>("#status-copy");
 const proximityHint = document.querySelector<HTMLElement>("#proximity-hint");
+const welcomeScreen = document.querySelector<HTMLElement>("#welcome-screen");
+const startButton = document.querySelector<HTMLButtonElement>("#start-game");
 
 // Fail loudly during startup if the HTML and application code drift apart.
 // Continuing with a missing element would produce a broken or partially
 // interactive game screen and make the original cause harder to diagnose.
-if (!canvas || !statusTitle || !statusCopy || !proximityHint) {
+if (
+  !canvas ||
+  !statusTitle ||
+  !statusCopy ||
+  !proximityHint ||
+  !welcomeScreen ||
+  !startButton
+) {
   throw new Error("The game page is missing required interface elements.");
 }
 
@@ -44,6 +53,18 @@ const engine = new Engine(canvas, true, {
 const world = createWorld(engine, canvas);
 const updateMovement = createKeyboardMovement(world.camera);
 let discoveryState = createDiscoveryState();
+let hasStarted = false;
+
+// Keep the initial welcome state separate from exploration: keyboard input
+// and discovery are ignored until the player chooses to begin.
+startButton.addEventListener("click", () => {
+  hasStarted = true;
+  welcomeScreen.classList.add("is-dismissed");
+  welcomeScreen.setAttribute("aria-hidden", "true");
+  canvas.removeAttribute("aria-hidden");
+  canvas.tabIndex = 0;
+  canvas.focus({ preventScroll: true });
+});
 
 /**
  * The E-key interaction is intentionally local and one-shot for this
@@ -52,7 +73,7 @@ let discoveryState = createDiscoveryState();
  * validation, persistence, or a reusable interaction system.
  */
 window.addEventListener("keydown", (event) => {
-  if (event.key.toLowerCase() !== "e") {
+  if (!hasStarted || event.key.toLowerCase() !== "e") {
     return;
   }
 
@@ -68,9 +89,9 @@ window.addEventListener("keydown", (event) => {
   discoveryState = result.state;
   world.beaconMaterial.emissiveColor = new Color3(0.2, 0.38, 0.3);
   proximityHint.hidden = true;
-  statusTitle.textContent = "Signal found.";
+  statusTitle.textContent = "Hello, little friend!";
   statusCopy.textContent =
-    "You uncovered the first trace. More of this world remains unknown.";
+    "You found a new friend! I wonder where its glow leads next.";
 });
 
 // Babylon renders continuously while the page is active. Movement is updated
@@ -78,6 +99,11 @@ window.addEventListener("keydown", (event) => {
 // same frame's state. The movement module uses elapsed time, not frame count,
 // to keep travel speed approximately consistent across refresh rates.
 engine.runRenderLoop(() => {
+  if (!hasStarted) {
+    world.scene.render();
+    return;
+  }
+
   updateMovement(engine.getDeltaTime());
 
   // The prompt is presentation derived from current world state; discovery

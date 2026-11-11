@@ -6,7 +6,7 @@
 
 ## What runs today
 
-The prototype is a single-page browser application. Its web entry point creates the Babylon.js engine, builds one procedural scene, registers desktop keyboard movement, and coordinates a one-shot discovery transition supplied by the platform-independent game layer. Babylon renders the scene continuously while the browser tab is active. The proximity prompt is derived from the distance between the camera and a beacon; pressing **E** within range updates local UI and material state.
+The prototype is a single-page browser application. Its web entry point creates the Babylon.js engine, builds one procedural scene, registers desktop keyboard movement, and coordinates a one-shot discovery transition supplied by the platform-independent game layer. A welcoming illustrated splash screen waits for the player to choose “Let's explore” before movement and discovery input are enabled. Babylon renders the scene continuously while the browser tab is active. The proximity prompt is derived from the distance between the camera and a friendly companion; pressing **E** within range updates local UI and material state.
 
 | Layer | Responsibility | Current implementation |
 |---|---|---|
@@ -22,7 +22,7 @@ The prototype is a single-page browser application. Its web entry point creates 
 1. A browser key event updates the web input adapter's set of currently pressed movement keys.
 2. Each render frame, the web entry point asks the adapter to move the camera using the frame's elapsed time.
 3. Before rendering, the entry point calls the platform-independent game rule to check camera-to-beacon range and show the interaction hint.
-4. When **E** is pressed in range, the entry point asks the game rule for a discovery state transition, then updates local UI and dims the beacon.
+4. When **E** is pressed in range, the entry point asks the game rule for a discovery state transition, then updates local UI and dims the companion.
 5. Babylon renders the updated scene and the browser presents the resulting frame.
 
 The beacon and discovery state exist only in the current page runtime. Reloading resets the discovery. Movement has no collision detection, so placeholder geometry does not block the camera.

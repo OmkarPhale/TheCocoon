@@ -23,7 +23,7 @@ Develop a polished game that can reach players across platforms over time. Begin
 
 ## Prototype status
 
-The first browser prototype currently provides a small 3D scene, keyboard/mouse navigation, and a nearby beacon interaction. The beacon is a temporary stand-in for a discovery objective, not a finalized game mechanic or setting. The prototype is currently solo-only; real-time co-op remains a planned feature.
+The first browser prototype now opens with a warm illustrated welcome screen and a clear start action. After starting, players can explore a brighter meadow scene, follow a smiling glowing companion, and greet it when nearby. The companion and setting are temporary prototypes, not finalized game content. Play remains solo-only; real-time co-op is still planned.
 
 ## Design principles
 

@@ -53,4 +53,4 @@ On a connected machine, install the locked dependencies with `npm ci`. Start the
 
 For offline development after the dependency packages have been cached on this machine, use `npm ci --offline` and then the same scripts. A first-time offline setup requires a pre-populated npm cache or an approved offline dependency bundle; the lockfile alone does not contain package files. See [docs/PLATFORMS_AND_OFFLINE.md](docs/PLATFORMS_AND_OFFLINE.md) before preparing a disconnected machine.
 
-The current prototype is desktop-browser and keyboard/mouse only. Walk toward the beacon, then press **E** when the interaction prompt appears. Touch controls and online co-op are not implemented yet.
+The current prototype opens with a welcome screen. Choose **Let's explore**, then use **WASD** and the mouse to find the smiling light; press **E** nearby to say hello. It is currently desktop-browser and keyboard/mouse only. Touch controls and online co-op are not implemented yet.
