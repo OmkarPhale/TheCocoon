@@ -4,13 +4,13 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "build:web": "tsc --noEmit && vite build",
-    "preview": "vite preview",
+    "dev": "vite --config vite.config.ts",
+    "build": "tsc --noEmit && vite build --config vite.config.ts",
+    "build:web": "tsc --noEmit && vite build --config vite.config.ts",
+    "preview": "vite preview --config vite.config.ts",
     "typecheck": "tsc --noEmit",
-    "dev:web": "vite --host 127.0.0.1",
-    "play:web": "vite --host 127.0.0.1 --open"
+    "dev:web": "vite --config vite.config.ts --host 127.0.0.1",
+    "play:web": "vite --config vite.config.ts --host 127.0.0.1 --open"
   },
   "dependencies": {
     "@babylonjs/core": "^8.0.0"

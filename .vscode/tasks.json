@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Play web prototype",
+			"label": "Play A Little Light Home",
 			"type": "shell",
 			"command": "C:\\Program Files\\nodejs\\npm.cmd",
 			"args": [

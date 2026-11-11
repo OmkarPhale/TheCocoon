@@ -4,7 +4,7 @@ _Living document: revise as decisions are tested with a playable build and playe
 
 ## Project intent
 
-Develop a polished game that can reach players across platforms over time. Begin with a browser release to make playable feedback quick and accessible. The current workspace name, TheCocoon, is not a confirmed game title.
+Develop a polished game that can reach players across platforms over time. Begin with a browser release to make playable feedback quick and accessible. TheCocoon is the engine and workspace name; **A Little Light Home** is the current game's title.
 
 ## Current decisions
 
@@ -12,7 +12,7 @@ Develop a polished game that can reach players across platforms over time. Begin
 |---|---|
 | First release focus | Browser-first playable game |
 | Initial game direction | 3D exploration and discovery, framed by an original gentle story |
-| Working story | The Cocoon: The Last Note — a new Wayfinder helps Mori, a lost cocoon spirit, find the scattered star-notes of the silent Hearthbell |
+| Working story | A Little Light Home: The Last Note — a new Wayfinder helps Mori, a lost cocoon spirit, find the scattered star-notes of the silent Hearthbell |
 | Play modes | Solo and real-time co-op |
 | First gameplay scope | One compact area, basic movement and camera, and one discovery to find |
 | Feature sequence | Exploration first; then puzzles, collection/extraction, and survival gradually |
@@ -43,7 +43,7 @@ The first story slice now opens with a chapter-specific welcome, introduces Star
 
 These are intentionally unresolved; do not treat the provisional direction as a final technical commitment.
 
-- Final game title, character designs, and visual direction.
+- Whether playtesting confirms the A Little Light Home title, character designs, and visual direction.
 - Whether playtesting confirms the story premise, reading level, and first-chapter objective.
 - Intended player count and how players join a co-op session.
 - Browser/device support matrix and performance targets.

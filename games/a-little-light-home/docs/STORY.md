@@ -1,8 +1,8 @@
 # Story foundation
 
-## The Cocoon: The Last Note
+## A Little Light Home: The Last Note
 
-_Working title and story premise for the first playable chapter. The game name, characters, and setting can still change after playtesting._
+_Story premise for the first playable chapter. The title is selected; characters and setting can still change after playtesting._
 
 ### The promise to the player
 

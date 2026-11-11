@@ -21,6 +21,8 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [x] Gave the first exploration slice a named story premise, character, destination, and visible next-step hook.
 - [x] Added an optional, editable browser-only player keepsake and used its preferences in Mori's first milestone response.
 - [x] Added accelerated grounded movement, gravity, solid scenery collisions, and a gentle collision-aware approach ramp.
+- [x] Renamed the current game A Little Light Home and separated its story, browser client, rules, rendering, and tests from the shared TheCocoon workspace.
+- [x] Added root-level ownership rules for future shared engine code, platform integrations, shared assets, and tests.
 
 ## Planned
 
@@ -36,7 +38,7 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 
 ## Pending decisions
 
-- [ ] Confirm game title, setting, visual direction, and discovery objective.
+- [ ] Validate the A Little Light Home title, setting, visual direction, and discovery objective with players.
 - [ ] Decide exact browser/device support and initial performance targets.
 - [ ] Confirm engine and rendering fallback after a prototype.
 - [ ] Choose multiplayer session and hosting architecture.
