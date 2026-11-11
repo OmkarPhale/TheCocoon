@@ -18,10 +18,11 @@ Update this list when a milestone changes. Keep decisions and completed work evi
 - [x] Verified dependency installation with `npm ci --offline` using the existing local npm cache.
 - [x] Recorded the repository visibility decision for review during release planning.
 - [x] Added an illustrated, child-friendly welcome screen and a clear start-to-play flow.
+- [x] Gave the first exploration slice a named story premise, character, destination, and visible next-step hook.
 
 ## Planned
 
-- [ ] Choose a temporary setting and define one concrete discovery objective.
+- [ ] Playtest the Wayfinder, Mori, and Hearthbell story beat with children and their parents/guardians; revise based on what they understand and enjoy.
 - [ ] Define the first playable scope, including session flow and a small co-op player count.
 - [ ] Confirm WebGL 2 support and the intended fallback behavior across target browsers.
 - [ ] Playtest the discovery loop and refine movement, camera feel, and interaction feedback.

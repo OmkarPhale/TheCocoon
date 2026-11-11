@@ -1,6 +1,6 @@
 # TheCocoon
 
-TheCocoon is the working name of a browser-first 3D game project. The game title is not decided yet.
+The Cocoon is a browser-first 3D exploration game in which a new Wayfinder helps Mori, a lost cocoon spirit, restore the star-notes of the silent Hearthbell. See [docs/STORY.md](docs/STORY.md) for the current story foundation; names and details remain open to player feedback.
 
 ## Quick test launch
 
@@ -53,4 +53,4 @@ On a connected machine, install the locked dependencies with `npm ci`. Start the
 
 For offline development after the dependency packages have been cached on this machine, use `npm ci --offline` and then the same scripts. A first-time offline setup requires a pre-populated npm cache or an approved offline dependency bundle; the lockfile alone does not contain package files. See [docs/PLATFORMS_AND_OFFLINE.md](docs/PLATFORMS_AND_OFFLINE.md) before preparing a disconnected machine.
 
-The current prototype opens with a welcome screen. Choose **Let's explore**, then use **WASD** and the mouse to find the smiling light; press **E** nearby to say hello. It is currently desktop-browser and keyboard/mouse only. Touch controls and online co-op are not implemented yet.
+The current prototype opens with the first chapter's story. Choose **Begin the story**, then use **WASD** and the mouse to follow the path to Mori. Press **E** nearby to wake three star-lights and reveal the hilltop bell. Reaching and ringing the bell is not implemented yet. The prototype is desktop-browser and keyboard/mouse only; touch controls and online co-op are not implemented.

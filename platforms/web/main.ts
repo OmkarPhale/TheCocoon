@@ -22,6 +22,7 @@ import "./style.css";
 const canvas = document.querySelector<HTMLCanvasElement>("#game-canvas");
 const statusTitle = document.querySelector<HTMLElement>("#status-title");
 const statusCopy = document.querySelector<HTMLElement>("#status-copy");
+const storyEyebrow = document.querySelector<HTMLElement>("#story-eyebrow");
 const proximityHint = document.querySelector<HTMLElement>("#proximity-hint");
 const welcomeScreen = document.querySelector<HTMLElement>("#welcome-screen");
 const startButton = document.querySelector<HTMLButtonElement>("#start-game");
@@ -33,6 +34,7 @@ if (
   !canvas ||
   !statusTitle ||
   !statusCopy ||
+  !storyEyebrow ||
   !proximityHint ||
   !welcomeScreen ||
   !startButton
@@ -87,11 +89,16 @@ window.addEventListener("keydown", (event) => {
   }
 
   discoveryState = result.state;
-  world.beaconMaterial.emissiveColor = new Color3(0.2, 0.38, 0.3);
+  world.beaconMaterial.emissiveColor = new Color3(0.3, 0.24, 0.08);
+  world.wayfinderMaterials.forEach((material) => {
+    material.emissiveColor = new Color3(0.95, 0.7, 0.24);
+  });
+  world.bellMaterial.emissiveColor = new Color3(0.85, 0.55, 0.12);
   proximityHint.hidden = true;
-  statusTitle.textContent = "Hello, little friend!";
+  storyEyebrow.textContent = "A memory returns";
+  statusTitle.textContent = "Mori remembers the Hearthbell.";
   statusCopy.textContent =
-    "You found a new friend! I wonder where its glow leads next.";
+    "Three star-notes are waiting up the hill. Find them, and ring the bell again.";
 });
 
 // Babylon renders continuously while the page is active. Movement is updated

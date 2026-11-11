@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A browser-first 3D exploration prototype."
+      content="Follow Mori through the Starwake Meadow in The Cocoon, a gentle story of lost stars and finding the way home."
     />
     <meta name="theme-color" content="#e9f8ee" />
     <title>The Cocoon — A little adventure</title>
@@ -27,16 +27,20 @@
       >
         <div class="welcome-card">
           <div class="welcome-copy">
-            <p class="welcome-kicker">A little world to wander through</p>
-            <h1 id="welcome-title">The Cocoon</h1>
+            <p class="welcome-kicker">The Cocoon · Chapter one</p>
+            <h1 id="welcome-title">The last note</h1>
             <p class="welcome-description">
-              Something cheerful is glowing among the stones. Shall we go and
-              say hello?
+              Last night, the Hearthbell rang once. The stars scattered across
+              the meadow.
+            </p>
+            <p class="welcome-story">
+              You're a new Wayfinder. Help Mori find three star-notes and ring
+              the bell again.
             </p>
             <button id="start-game" class="start-button" type="button">
-              Let's explore <span aria-hidden="true">→</span>
+              Begin the story <span aria-hidden="true">→</span>
             </button>
-            <p class="welcome-note">Take your time. There's no rush.</p>
+            <p class="welcome-note">A gentle adventure about helping lost friends find their way home.</p>
           </div>
           <div class="welcome-art" aria-hidden="true">
             <svg
@@ -89,12 +93,12 @@
           <span class="divider">/</span>
           <span class="edition">A little adventure</span>
         </div>
-        <span class="mode-label"><span></span> Playing on your own</span>
+        <span class="mode-label"><span></span> Chapter one · Starwake Meadow</span>
       </header>
       <section class="intro" aria-live="polite">
-        <p class="eyebrow">A friend is waiting</p>
-        <h2 id="status-title">Can you find the little light?</h2>
-        <p id="status-copy">Follow the glow and see what you discover.</p>
+        <p id="story-eyebrow" class="eyebrow">Chapter one · The last note</p>
+        <h2 id="status-title">The Hearthbell has fallen silent.</h2>
+        <p id="status-copy">Find Mori, then follow the lights that lead back to the hill.</p>
       </section>
       <div class="reticle" aria-hidden="true"></div>
       <div id="proximity-hint" class="proximity-hint" hidden>

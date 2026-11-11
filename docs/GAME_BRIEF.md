@@ -11,7 +11,8 @@ Develop a polished game that can reach players across platforms over time. Begin
 | Topic | Decision |
 |---|---|
 | First release focus | Browser-first playable game |
-| Initial game direction | 3D exploration and discovery |
+| Initial game direction | 3D exploration and discovery, framed by an original gentle story |
+| Working story | The Cocoon: The Last Note — a new Wayfinder helps Mori, a lost cocoon spirit, find the scattered star-notes of the silent Hearthbell |
 | Play modes | Solo and real-time co-op |
 | First gameplay scope | One compact area, basic movement and camera, and one discovery to find |
 | Feature sequence | Exploration first; then puzzles, collection/extraction, and survival gradually |
@@ -23,7 +24,7 @@ Develop a polished game that can reach players across platforms over time. Begin
 
 ## Prototype status
 
-The first browser prototype now opens with a warm illustrated welcome screen and a clear start action. After starting, players can explore a brighter meadow scene, follow a smiling glowing companion, and greet it when nearby. The companion and setting are temporary prototypes, not finalized game content. Play remains solo-only; real-time co-op is still planned.
+The first story slice now opens with a chapter-specific welcome, introduces Starwake Meadow, the Wayfinder, Mori, and the silent Hearthbell, then leads to a first encounter. Greeting Mori wakes three visible star-lights along a stepping-stone route toward the hilltop bell. Reaching the bell, finding the notes, and ringing it remain future work. The character and setting are still subject to feedback. Play remains solo-only; real-time co-op is still planned.
 
 ## Design principles
 
@@ -37,8 +38,8 @@ The first browser prototype now opens with a warm illustrated welcome screen and
 
 These are intentionally unresolved; do not treat the provisional direction as a final technical commitment.
 
-- Game setting, tone, visual style, and final title.
-- The specific discovery objective and what makes exploration rewarding.
+- Final game title, character designs, and visual direction.
+- Whether playtesting confirms the story premise, reading level, and first-chapter objective.
 - Intended player count and how players join a co-op session.
 - Browser/device support matrix and performance targets.
 - Whether Babylon.js remains the best fit after a minimal rendering prototype.
